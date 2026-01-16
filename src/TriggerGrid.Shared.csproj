@@ -5,8 +5,8 @@
     <Nullable>enable</Nullable>
     <AssemblyTitle>TriggerGrid.Shared</AssemblyTitle>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyVersion>1.0.0.2</AssemblyVersion>
+    <FileVersion>1.0.0.2</FileVersion>
     <Title>TriggerGrid.Shared</Title>
     <Company>TriggerGrid</Company>
     <Authors>TriggerGrid</Authors>
@@ -24,6 +24,21 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>    
+    <DebugType>portable</DebugType>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>    
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <Version>1.0.2</Version>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\..\Images\TriggerGrid_128x128.png">
       <Pack>True</Pack>
@@ -35,19 +50,22 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 
-  <Target Name="CopyNuGetPackageToLocalFeed"
-          AfterTargets="Pack">
+
+  <Target Name="CopyNuGetPackageToLocalFeed" AfterTargets="Pack">
 
     <ItemGroup>
       <PackedNuGet Include="$(PackageOutputPath)\*.nupkg" />
     </ItemGroup>
 
-    <MakeDir Directories="C:\NuGet\LocalFeed"
-             Condition="!Exists('C:\NuGet\LocalFeed')" />
+    <MakeDir Directories="C:\NuGet\LocalFeed" Condition="!Exists('C:\NuGet\LocalFeed')" />
 
-    <Copy SourceFiles="@(PackedNuGet)"
-          DestinationFolder="C:\NuGet\LocalFeed"
-          SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PackedNuGet)" DestinationFolder="C:\NuGet\LocalFeed" SkipUnchangedFiles="true" />
   </Target>
 </Project>
